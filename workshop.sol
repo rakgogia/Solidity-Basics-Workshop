@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.4; //version we are compling in
 
 contract Token {
 
@@ -37,7 +37,15 @@ contract StandardToken is Token {
     function transfer(address _to, uint256 _value) public returns (bool success) {
         //Default assumes totalSupply can't be over max (2^256 - 1).
         //TODO
-     
+        if (balances[msg.sender] >= _value && _value > 0){
+            balances[msg.sender] -= _value;
+            balances[_to] += _value;
+            Transfer(msg.sender, _to, _value);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
      /// @notice send `_value` token to `_to` from `_from` on the condition it is approved by `_from`
@@ -48,13 +56,23 @@ contract StandardToken is Token {
     function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
         
        //TODO
+        if (balances[_from] >= _value && _value > 0 && allowed[_from][msg.sender] >= _value){
+            balances[_from] -= _value;
+            balances[_to] += _value;
+            allowed[_from][msg.sender] -= _value;
+            Transfer(_from, _to, _value);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /// @param _owner The address from which the balance will be retrieved
     /// @return The balance
     function balanceOf(address _owner) constant returns (uint256 balance) {
         //TODO
-
+        return balances[_owner];
     }
 
     /// @notice `msg.sender` approves `_addr` to spend `_value` tokens
@@ -63,22 +81,23 @@ contract StandardToken is Token {
     /// @return Whether the approval was successful or not
     function approve(address _spender, uint256 _value) returns (bool success) {
        //TODO 
-
+        allowed[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
+        return true;
     }
 
     /// @param _owner The address of the account owning tokens
     /// @param _spender The address of the account able to transfer the tokens
     /// @return Amount of remaining tokens allowed to spent
     function allowance(address _owner, address _spender) constant returns (uint256 remaining) {
-      
       //TODO 
-
+        return allowed[_owner][_spender];
     }
 
    
 }
 
-contract WolverineCoin is StandardToken { // CHANGE THIS. Update the contract name.
+contract SisterJeanToken is StandardToken { // CHANGE THIS. Update the contract name.
 
     /* Public variables of the token */
 
@@ -98,13 +117,13 @@ contract WolverineCoin is StandardToken { // CHANGE THIS. Update the contract na
 
     // This is a constructor function 
     // which means the following function name has to match the contract name declared above
-    function WolverineCoin() {
+    function SisterJeanToken() {
         balances[msg.sender] = 1000000000000000000000;               // Give the creator all initial tokens. This is set to 1000 for example.
         totalSupply = 1000000000000000000000;                        // Update total supply (1000 for example) (CHANGE THIS)
-        name = "WolverineCoin";                                   // Set the name for display purposes (CHANGE THIS)
+        name = "SisterJean";                                   // Set the name for display purposes (CHANGE THIS)
         decimals = 18;                                               // Amount of decimals for display purposes (CHANGE THIS)
-        symbol = "MWC";                                             // Set the symbol for display purposes (CHANGE THIS)
-        unitsOneEthCanBuy = 2;                                      // Set the price of your token for the ICO (CHANGE THIS)
+        symbol = "SJ";                                             // Set the symbol for display purposes (CHANGE THIS)
+        unitsOneEthCanBuy = 5;                                      // Set the price of your token for the ICO (CHANGE THIS)
         fundsWallet = msg.sender;                                    // The owner of the contract gets ETH
     }
 
