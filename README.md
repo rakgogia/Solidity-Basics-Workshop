@@ -1,3 +1,6 @@
 # Solidity-Basics-Workshop
-This workshop was hosted by Blockchain@Michigan on April 1st, 2018 (and yes, this is not a joke)
-Participants created a standard ERC20 token and deployed it on the test net.
+Blockchain@Michigan Solidity Basics Workshop -- creating your own token on Ethereum! This empty contract was created for our beginner Solidity workshop at the University of Michigan.
+
+Event: https://www.facebook.com/events/576986312681518/
+Workshop syllabus: https://tinyurl.com/CreateToken
+Contact: michiganblockchain@umich.edu
